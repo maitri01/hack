@@ -1,15 +1,15 @@
-# Hackathon Setup (Barcelona)
+# Hackathon Setup (Warsaw)
 
 # Hackathon Environment Guide
 
 This guide explains how to set up and use the shared environment.
-### Always change the project id before sharing. (eg. training2614)
+### Always change the project id before sharing. (eg. training2615)
 
 You are given access to two scripts:
 
-- `hackathon_setup.sh`  https://huggingface.co/datasets/maitri01/hackathon/resolve/main/hackathon_setup.sh
+- `hackathon_setup.sh`  https://huggingface.co/datasets/SprintML/hackathon/resolve/main/hackathon_setup.sh
 - `teammate.sh`
-https://huggingface.co/datasets/maitri01/hackathon/resolve/main/teammate.sh
+https://huggingface.co/datasets/SprintML/hackathon/resolve/main/teammate.sh
 
 (Instruction on downloading these files is provided below)
 
@@ -31,11 +31,11 @@ Owner must manually create a folder in scratch:
 (This `<team_lead-username>` is where all your data will reside and only you and your team can access it)
 
 ```
-cd /p/scratch/training2614
+cd /p/scratch/training2615
 mkdir -p <team_lead-username>
 cd <team_lead-username>
-wget https://huggingface.co/datasets/maitri01/hackathon/resolve/main/hackathon_setup.sh -O hackathon_setup.sh
-wget https://huggingface.co/datasets/maitri01/hackathon/resolve/main/teammate.sh -O teammate.sh
+wget https://huggingface.co/datasets/SprintML/hackathon/resolve/main/hackathon_setup.sh -O hackathon_setup.sh
+wget https://huggingface.co/datasets/SprintML/hackathon/resolve/main/teammate.sh -O teammate.sh
 ```
 
 ### Step 1: Edit the script
@@ -63,7 +63,7 @@ source hackathon_setup.sh
 
 ### What this does
 
-- creates shared folder in `/p/scratch/training2614`
+- creates shared folder in `/p/scratch/training2615`
 - restricts access to only team members
 - downloads datasets
 - creates per-task environments (`.venv`)
@@ -107,7 +107,7 @@ source teammate.sh
 Go to your task:
 
 ```bash
-cd /p/scratch/training2614/<owner>/<team-folder>/<dataset-name>
+cd /p/scratch/training2615/<owner>/<team-folder>/<dataset-name>
 ```
 
 Activate environment:
@@ -133,7 +133,7 @@ uv run main.py
 Run:
 
 ```bash
-jutil env activate -p training2614
+jutil env activate -p training2615
 ```
 
 If needed:
@@ -145,7 +145,7 @@ source ~/.bashrc
 # 6. Folder structure
 
 ```
-/p/scratch/training2614/<owner>/
+/p/scratch/training2615/<owner>/
     └── <team-folder>/
         ├── <dataset-1>/
         │   ├── .venv/
@@ -170,10 +170,11 @@ Create main.sh
 
 ```powershell
 #!/bin/bash
-#SBATCH --account=training2614
+#SBATCH --account=training2615
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:1
+#SBATCH --reservation=cispa_hack
 #SBATCH --cpus-per-task=30
 #SBATCH --partition=dc-gpu
 #SBATCH --output=output/%j.out  
