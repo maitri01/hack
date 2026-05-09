@@ -22,7 +22,7 @@ Before starting:
 
 Only one person from the team should run the OWNER setup.
 
-# 2. Owner setup (run once)
+# 2. Owner setup (run once only by the team owner/lead)
 
 ## Create your folder and download the scripts
 
