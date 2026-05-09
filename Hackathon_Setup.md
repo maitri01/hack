@@ -174,7 +174,7 @@ Create main.sh
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:1
-#SBATCH --reservation=cispa_hack
+#SBATCH --reservation=cispahack
 #SBATCH --cpus-per-task=30
 #SBATCH --partition=dc-gpu
 #SBATCH --output=output/%j.out  
