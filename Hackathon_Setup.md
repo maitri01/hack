@@ -69,7 +69,7 @@ source hackathon_setup.sh
 - creates per-task environments (`.venv`)
 - sets shared cache (uv + HuggingFace)
 
-# 3. Teammate setup (each TEAMMATE except OWNER)
+# 3. Teammate setup (only after Step 2 is completed by OWNER)(each TEAMMATE except OWNER)
 
 <aside>
 💡
