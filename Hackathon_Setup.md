@@ -1,9 +1,9 @@
-# Hackathon Setup (Warsaw)
+# Hackathon Setup (Finale)
 
 # Hackathon Environment Guide
 
 This guide explains how to set up and use the shared environment.
-### Always change the project id before sharing. (eg. training2615)
+### Always change the project id before sharing. (eg. training2625)
 
 You are given access to two scripts:
 
@@ -22,7 +22,7 @@ Before starting:
 
 Only one person from the team should run the OWNER setup.
 
-# 2. Owner setup (run once only by the team owner/lead)
+# 2. Owner setup (run once)
 
 ## Create your folder and download the scripts
 
@@ -31,7 +31,7 @@ Owner must manually create a folder in scratch:
 (This `<team_lead-username>` is where all your data will reside and only you and your team can access it)
 
 ```
-cd /p/scratch/training2615
+cd /p/scratch/training2625
 mkdir -p <team_lead-username>
 cd <team_lead-username>
 wget https://huggingface.co/datasets/SprintML/hackathon/resolve/main/hackathon_setup.sh -O hackathon_setup.sh
@@ -63,7 +63,7 @@ source hackathon_setup.sh
 
 ### What this does
 
-- creates shared folder in `/p/scratch/training2615`
+- creates shared folder in `/p/scratch/training2625`
 - restricts access to only team members
 - downloads datasets
 - creates per-task environments (`.venv`)
@@ -107,7 +107,7 @@ source teammate.sh
 Go to your task:
 
 ```bash
-cd /p/scratch/training2615/<owner>/<team-folder>/<dataset-name>
+cd /p/scratch/training2625/<owner>/<team-folder>/<dataset-name>
 ```
 
 Activate environment:
@@ -133,7 +133,7 @@ uv run main.py
 Run:
 
 ```bash
-jutil env activate -p training2615
+jutil env activate -p training2625
 ```
 
 If needed:
@@ -145,7 +145,7 @@ source ~/.bashrc
 # 6. Folder structure
 
 ```
-/p/scratch/training2615/<owner>/
+/p/scratch/training2625/<owner>/
     └── <team-folder>/
         ├── <dataset-1>/
         │   ├── .venv/
@@ -170,14 +170,15 @@ Create main.sh
 
 ```powershell
 #!/bin/bash
-#SBATCH --account=training2615
+#SBATCH --account=training2625
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:1
-#SBATCH --reservation=cispahack
-#SBATCH --cpus-per-task=30
+#SBATCH --reservation=cispa-hack
+#SBATCH --cpus-per-task=8
 #SBATCH --partition=dc-gpu
 #SBATCH --output=output/%j.out  
+#SBATCH --error=output/%j.err  
 
 # Go to folder where the code file is located
 cd your-folder
