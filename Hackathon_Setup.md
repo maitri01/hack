@@ -83,7 +83,7 @@ Allow the setup to finish successfully before teammates proceed.
 ### What this script does
 
 - Activates the assigned JURECA project.
-- Creates the team lead's folder in `/p/scratch/training2625/`.
+- Creates the team lead's folder in `/p/scratch/training2666/`.
 - Creates the shared team folder inside it.
 - Sets ACL permissions for the team lead and listed teammates.
 - Downloads all task datasets from Hugging Face.
@@ -93,7 +93,7 @@ Allow the setup to finish successfully before teammates proceed.
 The shared folder will be located at:
 
 ```text
-/p/scratch/training2625/<team-lead-username>/<team-name>/
+/p/scratch/training2666/<team-lead-username>/<team-name>/
 ```
 
 **Once the team lead's setup is complete, all remaining team members can proceed to Section 3.**
@@ -152,7 +152,7 @@ All team members work inside the same shared team folder.
 Go to a task directory:
 
 ```bash
-cd /p/scratch/training2625/<team-lead>/<team-folder>/<dataset-name>
+cd /p/scratch/training2666/<team-lead>/<team-folder>/<dataset-name>
 ```
 
 Activate the task's Python environment:
@@ -180,7 +180,7 @@ Use the actual filename instead of `main.py` if your script has a different name
 When starting a new JURECA session, activate the project:
 
 ```bash
-jutil env activate -p training2625
+jutil env activate -p training2666
 ```
 
 The shared cache configuration is written to `.bashrc` during setup.
@@ -200,7 +200,7 @@ You do not need to rerun the initial setup scripts for every session.
 Example folder structure after setup:
 
 ```text
-/p/scratch/training2625/
+/p/scratch/training2666/
 └── <team-lead-username>/
     └── <team-folder>/
         ├── MGI/
@@ -235,7 +235,7 @@ The team lead can update permissions for the existing folder using:
 TEAM_LEAD="<team-lead-username>"
 NEW_MEMBER="<new-member-username>"
 
-TEAM_LEAD_DIR="/p/scratch/training2625/$TEAM_LEAD"
+TEAM_LEAD_DIR="/p/scratch/training2666/$TEAM_LEAD"
 
 # Grant access to existing files and folders
 setfacl -R -m "u:$NEW_MEMBER:rwx" "$TEAM_LEAD_DIR"
@@ -273,7 +273,7 @@ Example:
 
 ```bash
 #!/bin/bash
-#SBATCH --account=training2625
+#SBATCH --account=training2666
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:1
@@ -284,7 +284,7 @@ Example:
 #SBATCH --error=output/%j.err
 
 # Go to the task directory
-cd /p/scratch/training2625/<team-lead>/<team-folder>/<dataset-name>
+cd /p/scratch/training2666/<team-lead>/<team-folder>/<dataset-name>
 
 # Activate the task environment
 source .venv/bin/activate
