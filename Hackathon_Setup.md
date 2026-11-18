@@ -1,174 +1,277 @@
-# Hackathon Setup (Finale)
+# Hackathon Setup (Paris)
 
-# Hackathon Environment Guide
+## Hackathon Environment Guide
 
-This guide explains how to set up and use the shared environment.
-### Always change the project id before sharing. (eg. training2625)
+This guide explains how to set up and use the shared environment on JURECA.
 
-You are given access to two scripts:
+**Important: Always update the project ID before sharing the scripts and this guide.** For example, `training2666`.
 
-- `hackathon_setup.sh`  https://huggingface.co/datasets/SprintML/hackathon/resolve/main/hackathon_setup.sh
-- `teammate.sh`
-https://huggingface.co/datasets/SprintML/hackathon/resolve/main/teammate.sh
+The scripts currently use `training2666`. Replace this with the correct project ID in **both scripts** and in the commands below if your assigned project is different.
 
-(Instruction on downloading these files is provided below)
+### Setup scripts
 
-# 1. Decide roles
+- [hackathon_setup.sh](https://huggingface.co/datasets/SprintML/hackathon/resolve/main/hackathon_setup.sh)
+- [teammate.sh](https://huggingface.co/datasets/SprintML/hackathon/resolve/main/teammate.sh)
 
-Before starting:
+Instructions for downloading these files are provided below.
 
-- One person (Team Lead) = **Owner**
-- Others = **Teammates**
+## 1. Decide roles and execution order
 
-Only one person from the team should run the OWNER setup.
+Before starting, decide who will be the **Team Lead** and who will be the **Teammates**.
 
-# 2. Owner setup (run once)
+**The order is important:**
 
-## Create your folder and download the scripts
+1. **Team Lead runs first:** Configures and runs `hackathon_setup.sh` to create the shared environment.
+2. **Teammates run afterward:** Once the team lead finishes successfully, every remaining member individually configures and runs `teammate.sh` from their own JURECA account.
 
-Owner must manually create a folder in scratch:
+The team lead runs only `hackathon_setup.sh`. Every other member runs only `teammate.sh`.
 
-(This `<team_lead-username>` is where all your data will reside and only you and your team can access it)
+**Do not run both scripts from the same account.**
 
-```
-cd /p/scratch/training2625
-mkdir -p <team_lead-username>
-cd <team_lead-username>
+## 2. Team Lead setup (run first)
+
+### Step 1: Download the scripts
+
+Log in to JURECA using your own Jülich username.
+
+Download the scripts into a directory in your home folder:
+
+```bash
+mkdir -p ~/hackathon-scripts
+cd ~/hackathon-scripts
+
 wget https://huggingface.co/datasets/SprintML/hackathon/resolve/main/hackathon_setup.sh -O hackathon_setup.sh
+
 wget https://huggingface.co/datasets/SprintML/hackathon/resolve/main/teammate.sh -O teammate.sh
 ```
 
-### Step 1: Edit the script
+You do not need to manually create your folder in scratch. The setup script creates it automatically.
 
-Open `hackathon_setup.sh` and fill:
+### Step 2: Edit the configuration
+
+Open `hackathon_setup.sh` and update the configuration:
 
 ```bash
-OWNER="<your-username>"  # Your Juelich username
+TEAM_LEAD="<your-juelich-username>"
 
-TEAMMATE_1="<teammate1>" # Your teammates' Juelich usernames. Leave unused as it is
-TEAMMATE_2="<teammate2>"
-TEAMMATE_3="<teammate3>"
+TEAMMATE_1="<teammate1-username>"
+TEAMMATE_2="<teammate2-username>"
+TEAMMATE_3="<teammate3-username>"
 
-YOUR_FOLDER="<team_lead-username>" # You created in previous step
-TEAM_FOLDER="<team-name>" # Shared team folder inside YOUR_FOLDER
+TEAM_FOLDER="<your-team-name>"
 ```
 
-Do not leave these empty.
+- `TEAM_LEAD`: Your Jülich username.
+- `TEAMMATE_1`, `TEAMMATE_2`, `TEAMMATE_3`: The Jülich usernames of your teammates.
+- Leave unused teammate entries as `""`.
+- `TEAM_FOLDER`: The name of the shared team folder. All teammates must use exactly the same name.
 
-### Step 2: Run setup - ONLY OWNER
+For example, a team with one lead and two teammates should leave `TEAMMATE_3=""`.
+
+**Do not leave `TEAM_LEAD` or `TEAM_FOLDER` empty. At least one teammate must be specified.**
+
+### Step 3: Run the setup
+
+Only the team lead runs:
 
 ```bash
 source hackathon_setup.sh
 ```
 
-### What this does
+Allow the setup to finish successfully before teammates proceed.
 
-- creates shared folder in `/p/scratch/training2625`
-- restricts access to only team members
-- downloads datasets
-- creates per-task environments (`.venv`)
-- sets shared cache (uv + HuggingFace)
+### What this script does
 
-# 3. Teammate setup (only after Step 2 is completed by OWNER)(each TEAMMATE except OWNER)
+- Activates the assigned JURECA project.
+- Creates the team lead's folder in `/p/scratch/training2625/`.
+- Creates the shared team folder inside it.
+- Sets ACL permissions for the team lead and listed teammates.
+- Downloads all task datasets from Hugging Face.
+- Creates per-task Python environments (`.venv`).
+- Configures shared uv and Hugging Face cache directories.
 
-<aside>
-💡
+The shared folder will be located at:
 
-Run this only after the owner completes setup.
-
-</aside>
-
-### Step 1: Edit the script
-
-Open `teammate.sh` and fill:
-
-```bash
-OWNER="<owner-username>"
-TEAM_FOLDER="<team-name>" # Same as what Owner used in hackathon_setup.sh script
+```text
+/p/scratch/training2625/<team-lead-username>/<team-name>/
 ```
 
----
+**Once the team lead's setup is complete, all remaining team members can proceed to Section 3.**
 
-### Step 2: Run
+## 3. Teammate setup (run after Team Lead)
+
+Every teammate must complete these steps individually using their own JURECA account.
+
+**Do not run this script before the team lead finishes Section 2.**
+
+### Step 1: Download the teammate script
+
+```bash
+mkdir -p ~/hackathon-scripts
+cd ~/hackathon-scripts
+
+wget https://huggingface.co/datasets/SprintML/hackathon/resolve/main/teammate.sh -O teammate.sh
+```
+
+### Step 2: Edit the configuration
+
+Open `teammate.sh` and fill in:
+
+```bash
+TEAM_LEAD="<team-lead-username>"
+TEAM_FOLDER="<team-name>"
+```
+
+- `TEAM_LEAD`: The Jülich username of your team lead.
+- `TEAM_FOLDER`: Exactly the same team name used by the lead in `hackathon_setup.sh`.
+
+Do not enter your own username as `TEAM_LEAD` unless you are actually the team lead.
+
+### Step 3: Run the script
 
 ```bash
 source teammate.sh
 ```
 
-### What this does
+Every teammate must run this separately.
 
-- activates project environment
-- sets shared cache paths
-- installs `uv` if missing
-- verifies access to shared folder
+### What this script does
 
-# 4. Working on tasks
+- Activates the assigned JURECA project.
+- Verifies access to the shared team folder.
+- Configures shared uv and Hugging Face cache paths.
+- Installs `uv` for the current user if missing.
+- Saves the environment configuration in the user's `.bashrc`.
 
-Go to your task:
+**Teammates do not need to download the datasets or create the environments again.** These are shared with the team.
+
+## 4. Working on tasks
+
+All team members work inside the same shared team folder.
+
+Go to a task directory:
 
 ```bash
-cd /p/scratch/training2625/<owner>/<team-folder>/<dataset-name>
+cd /p/scratch/training2625/<team-lead>/<team-folder>/<dataset-name>
 ```
 
-Activate environment:
+Activate the task's Python environment:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Run code:
+Run your Python code:
 
 ```bash
 python main.py
 ```
 
-Or directly:
+Alternatively, if the task's uv project is configured:
 
 ```bash
-uv run main.py
+uv run python main.py
 ```
 
-# 5. Every new session
+Use the actual filename instead of `main.py` if your script has a different name.
 
-Run:
+## 5. Every new session
+
+When starting a new JURECA session, activate the project:
 
 ```bash
 jutil env activate -p training2625
 ```
 
-If needed:
+The shared cache configuration is written to `.bashrc` during setup.
+
+If the configuration is not loaded, run:
 
 ```bash
 source ~/.bashrc
 ```
 
-# 6. Folder structure
+Then navigate to your task directory and activate its environment if needed.
 
-```
-/p/scratch/training2625/<owner>/
+You do not need to rerun the initial setup scripts for every session.
+
+## 6. Folder structure
+
+Example folder structure after setup:
+
+```text
+/p/scratch/training2625/
+└── <team-lead-username>/
     └── <team-folder>/
-        ├── <dataset-1>/
+        ├── MGI/
         │   ├── .venv/
-        │   ├── main.py
-        │   └── requirements.txt
-        ├── <dataset-2>/
-        └── output/
+        │   ├── requirements.txt
+        │   └── output/
+        ├── FL_Data_Reconstruction/
+        │   ├── .venv/
+        │   ├── requirements.txt
+        │   └── output/
+        ├── watermark_localization/
+        │   ├── .venv/
+        │   ├── requirements.txt
+        │   └── output/
+        ├── .uv/
+        └── .cache/
 ```
 
-# 7. Rules
+The task folders contain the downloaded datasets, code, and any other provided files.
 
-- do not change permissions manually
-- do not delete shared folders
-- do not recreate `.venv` unless necessary
-- avoid installing random packages in shared environment
-- keep all work inside the team folder
-- store logs in `output/`
+All team members with the required permissions can work inside the shared folder.
 
-# 8. Jobs
+## 7. Adding a new teammate later
 
-Create main.sh
+If your team has already completed setup and another member joins later, the team lead must grant access to the new member.
 
-```powershell
+**Do not ask everyone to rerun their scripts.**
+
+The team lead can update permissions for the existing folder using:
+
+```bash
+TEAM_LEAD="<team-lead-username>"
+NEW_MEMBER="<new-member-username>"
+
+TEAM_LEAD_DIR="/p/scratch/training2625/$TEAM_LEAD"
+
+# Grant access to existing files and folders
+setfacl -R -m "u:$NEW_MEMBER:rwx" "$TEAM_LEAD_DIR"
+
+# Grant default access to future files and folders
+find "$TEAM_LEAD_DIR" -type d \
+    -exec setfacl -d -m "u:$NEW_MEMBER:rwx" {} +
+```
+
+This provides the new teammate with full access to the existing directory tree and default permissions on future files. It should be run only by the team lead and only when such access is intended.
+
+After the permissions have been added, the new teammate follows **Section 3** and runs:
+
+```bash
+source teammate.sh
+```
+
+Existing teammates do not need to repeat their setup.
+
+## 8. Rules
+
+- Do not change shared folder permissions manually unless you are the team lead managing access.
+- Do not delete shared folders or datasets.
+- Do not recreate `.venv` unless necessary.
+- Avoid installing unnecessary or conflicting packages into shared environments.
+- Keep task-related work inside the shared team folder.
+- Store generated outputs and logs in the appropriate task's `output/` directory.
+- Coordinate changes to shared code and environments with your teammates.
+
+## 9. Submitting GPU jobs
+
+To run your code on a GPU, create a Slurm job script called `main.sh` inside your task directory.
+
+Example:
+
+```bash
 #!/bin/bash
 #SBATCH --account=training2625
 #SBATCH --nodes=1
@@ -177,40 +280,60 @@ Create main.sh
 #SBATCH --reservation=cispa-hack
 #SBATCH --cpus-per-task=8
 #SBATCH --partition=dc-gpu
-#SBATCH --output=output/%j.out  
-#SBATCH --error=output/%j.err  
+#SBATCH --output=output/%j.out
+#SBATCH --error=output/%j.err
 
-# Go to folder where the code file is located
-cd your-folder
-# Activate the environment from the directory
+# Go to the task directory
+cd /p/scratch/training2625/<team-lead>/<team-folder>/<dataset-name>
+
+# Activate the task environment
 source .venv/bin/activate
-# Run the file: task_template.py
-srun python code.py  
+
+# Run your Python code
+srun python code.py
+
 echo "done!"
 ```
 
-Submit jobs using:
+Replace the placeholders with your actual folder names and Python filename.
+
+The example Slurm account, partition, reservation, and GPU settings must match the resources assigned for the hackathon.
+
+Make sure the task's `output/` directory exists before submitting.
+
+Submit the job:
 
 ```bash
 sbatch main.sh
 ```
 
-# 9. Common issues
+Check submitted jobs:
 
-### Cannot access folder
+```bash
+squeue -u $USER
+```
 
-- check correct `OWNER` and `TEAM_FOLDER`
-- ensure owner ran setup
+The job logs will be stored in the task's `output/` folder.
+
+## 10. Common issues
+
+### Cannot access the shared folder
+
+Check that:
+
+- You entered the correct `TEAM_LEAD` and `TEAM_FOLDER`.
+- The team lead completed the initial setup.
+- Your Jülich username was included in the team lead's permissions.
+
+If you joined after the initial setup, ask the team lead to follow Section 7.
 
 ### uv not found
+
+Install uv using:
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source ~/.local/bin/env
 ```
 
-### environment not working
-
-```bash
-source .venv/bin/activate
-```
+### Python
