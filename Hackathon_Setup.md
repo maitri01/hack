@@ -203,15 +203,15 @@ Example folder structure after setup:
 /p/scratch/training2666/
 └── <team-lead-username>/
     └── <team-folder>/
-        ├── MGI/
+        ├── unlearning/
         │   ├── .venv/
         │   ├── requirements.txt
         │   └── output/
-        ├── FL_Data_Reconstruction/
+        ├── model_equality/
         │   ├── .venv/
         │   ├── requirements.txt
         │   └── output/
-        ├── watermark_localization/
+        ├── Hackathon_Watermark_Localisation_Task/
         │   ├── .venv/
         │   ├── requirements.txt
         │   └── output/
